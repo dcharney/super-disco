@@ -5,7 +5,7 @@ Challenge 5: Work Day Scheduler
 A simple calendar application that allows a user to save events for each hour of the day. 
 
 
-The deployed webpage can be viewed at: https://dcharney.github.io/super-disco/.
+The deployed webpage can be viewed at: https://dcharney.github.io/workday-scheduler/.
 
 
 This project was built by Delaney Charney for Challenge Assignment No.5 of the UCF Coding Bootcamp. The requirements for the assignment are detailed below.
