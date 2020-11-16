@@ -5,10 +5,41 @@ var tasksToday = [];
 const startTime = 8;
 const endTime = 18;
 
+// build the schedule 
+var buildSchedule = function() {
+    // get parent element that will contain all rows
+    var parent = $("#schedule");
+    // generate a row for every hour between the start and end time
+    for (i=startTime;i<(endTime+1);i++) {
+        // build generic html for a single row
+        var rowEl = $("<div>").addClass("row justify-content-center no-gutters");
+        var timeEl = $("<div>").addClass("col-1 border-top border-right border-bottom h-100 d-flex align-items-center justify-content-center");
+        var timeP = $("<p>").addClass("ml-4 mb-0");
+        var taskEl = $("<div>").addClass("col-9 d-flex");
+        var taskTextarea = $("<textarea>").addClass("form-control");
+        var saveEl = $("<div>").addClass("col-1 d-flex");
+        var saveButton = $("<button>").addClass("saveBtn w-100").attr("id","saveBtn");
+        var saveButtonSpan = $("<span>").addClass("oi oi-box m-0");
+        // add row specific values
+        var time = moment(i,"HH").format("hA");
+        timeP.text(time);
+        taskTextarea.attr("id",time);
+        // build row
+        timeEl.append(timeP);
+        taskEl.append(taskTextarea);
+        saveButton.append(saveButtonSpan);
+        saveEl.append(saveButton);
+        rowEl.append(timeEl);
+        rowEl.append(taskEl);
+        rowEl.append(saveEl);
+
+        parent.append(rowEl);
+    };
+}
+
+
+
 // compare schedule rows against current time and set colors accordingly
-// grey for past
-// red for present
-// green for future
 var auditTask = function(taskEl) {
     var taskTime = $(taskEl).attr("id");
     var time = moment(taskTime,"hh a/A");
@@ -116,9 +147,13 @@ $(".row").on("blur", function() {
     loadTasks();
 });
 
+// generate the schedule
+buildSchedule();
+
 
 // load stored data when page is first opened
 loadTasks();
+
 
 // update row colors every 30 mins
 setInterval(function() {
