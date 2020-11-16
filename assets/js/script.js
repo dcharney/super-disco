@@ -5,7 +5,36 @@ var tasksToday = [];
 const startTime = 8;
 const endTime = 18;
 
-// create local object tasksToday
+// compare schedule rows against current time and set colors accordingly
+// grey for past
+// red for present
+// green for future
+var auditTask = function(taskEl) {
+    var taskTime = $(taskEl).attr("id");
+    var time = moment(taskTime,"hh a/A");
+    //convert to military 
+    time = time.format("HH");
+    var now = moment().format("HH");
+    //console.log(now);
+    //set now to 1PM for test purposes
+    //var now = "13";
+
+    //remove any existing colors
+    $(taskEl).removeClass("bg-secondary bg-success bg-danger");
+
+    // get difference in hours
+    var diff = (time - now);
+
+    if (diff > 0) {
+        $(taskEl).addClass("bg-success");
+    } else if (diff == 0) {
+        $(taskEl).addClass("bg-danger");
+    } else if (diff < 0 ) {
+        $(taskEl).addClass("bg-secondary");
+    };
+}
+
+// save tasks to local object tasksToday
 var saveTasks = function() {
     localStorage.setItem("tasksToday", JSON.stringify(tasksToday));
 }
@@ -16,7 +45,6 @@ var loadTasks = function() {
 
     // if nothing in localStorage, create a new object
     if (!tasksToday) {
-        console.log("hello!");
         tasksToday = [];
         var taskToday = {};
         for (i=startTime;i<(endTime+1);i++) {
@@ -78,12 +106,18 @@ $(".row").on("blur", function() {
 });
 
 
-
-
-
-
-
-
-
 // load stored data when page is first opened
 loadTasks();
+
+// update row colors every 30 mins
+setInterval(function() {
+    $(".row").each(function(index, el) {
+        console.log(index);
+        console.log(el);
+        //auditTask(el);
+    });
+}, (1000 * 60) * 30);
+
+$(".form-control").each(function(index, el) {
+    auditTask(el);
+});
