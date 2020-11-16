@@ -11,7 +11,6 @@ const endTime = 18;
 // green for future
 var auditTask = function(taskEl) {
     var taskTime = $(taskEl).attr("id");
-    console.log(taskEl);
     var time = moment(taskTime,"hh a/A");
     
     //convert to military 
@@ -36,6 +35,9 @@ var auditTask = function(taskEl) {
     } else if (diff < 0 ) {
         $(taskEl).addClass("bg-secondary");
     };
+
+    // set current day 
+    $("#currentDay").text(moment().format("dddd, MMMM Do"));
 }
 
 // save tasks to local object tasksToday
