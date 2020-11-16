@@ -12,13 +12,13 @@ var buildSchedule = function() {
     // generate a row for every hour between the start and end time
     for (i=startTime;i<(endTime+1);i++) {
         // build generic html for a single row
-        var rowEl = $("<div>").addClass("row justify-content-center no-gutters");
+        var rowEl = $("<div>").addClass("time-block row justify-content-center no-gutters");
         var timeEl = $("<div>").addClass("col-1 border-top border-right border-bottom h-100 d-flex align-items-center justify-content-center");
         var timeP = $("<p>").addClass("ml-4 mb-0");
         var taskEl = $("<div>").addClass("col-9 d-flex");
         var taskTextarea = $("<textarea>").addClass("form-control");
         var saveEl = $("<div>").addClass("col-1 d-flex");
-        var saveButton = $("<button>").addClass("saveBtn w-100").attr("id","saveBtn");
+        var saveButton = $("<button>").addClass("saveBtn w-100").attr("id","saveBtn "+i.toString());
         var saveButtonSpan = $("<span>").addClass("oi oi-box m-0");
         // add row specific values
         var time = moment(i,"HH").format("hA");
@@ -36,8 +36,8 @@ var buildSchedule = function() {
         parent.append(rowEl);
     };
 }
-
-
+// generate the schedule
+buildSchedule();
 
 // compare schedule rows against current time and set colors accordingly
 var auditTask = function(taskEl) {
@@ -123,16 +123,11 @@ var createTask = function(time, text) {
 
 // updates local storage when save clicked
 $(".saveBtn").on("click", function() {
+    var textArea = $(this).closest(".row").find("textarea");
     // grab current text content
-    var taskText = $(this).closest(".row").find("textarea").val().trim();
-    var taskTime = $(this).closest(".row").find("textarea").attr("id");
-    var idx = taskTime.replace(/\D/g,'');
-    var ampm = taskTime.replace(/[0-9]/g, '');
-
-    // convert to military time
-    if (ampm === "PM" && idx != 12) {
-        idx = parseInt(idx) + 12;
-    };
+    var taskText = textArea.val().trim();
+    var taskTime = textArea.attr("id");
+    var idx = moment(taskTime,"hA").format("H");
 
     // update tasksToday array
     tasksToday[idx].task = taskText;
@@ -140,15 +135,14 @@ $(".saveBtn").on("click", function() {
     saveTasks();
 });
 
-
-// revert back to stored task if save button not clicked
-$(".row").on("blur", function() {
-    // load tasks
-    loadTasks();
+$(".form-control").on('blur',function(event) {
+    // check if selected save button matches the row of the textarea edited
+    var targetId = $(event.target).closest(".row").find(".saveBtn").attr("id");
+    var selectedId = $(event.relatedTarget).attr("id");
+    if (!event.relatedTarget || targetId != selectedId) {
+        loadTasks();
+    };
 });
-
-// generate the schedule
-buildSchedule();
 
 
 // load stored data when page is first opened

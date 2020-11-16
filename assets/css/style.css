@@ -25,11 +25,11 @@ textarea{
   white-space: pre-wrap;
 }
 
-/** not currently used 
+
 .time-block{
   text-align: center;
   border-radius: 15px;
-} **/
+}
 
 .row {
   white-space: pre-wrap;
@@ -65,6 +65,7 @@ textarea{
   border-bottom-right-radius: 15px;
   background-color: #06AED5;
   color: white;
+  outline: none !important;
 }
 
 .saveBtn i:hover {
