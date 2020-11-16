@@ -21,7 +21,7 @@ var buildSchedule = function() {
         var saveButton = $("<button>").addClass("saveBtn w-100").attr("id","saveBtn "+i.toString());
         var saveButtonSpan = $("<span>").addClass("oi oi-box m-0");
         // add row specific values
-        var time = moment(i,"HH").format("hA");
+        var time = moment(i,"H").format("hA");
         timeP.text(time);
         taskTextarea.attr("id",time);
         // build row
@@ -42,13 +42,10 @@ buildSchedule();
 // compare schedule rows against current time and set colors accordingly
 var auditTask = function(taskEl) {
     var taskTime = $(taskEl).attr("id");
-    var time = moment(taskTime,"hh a/A");
-    
-    //convert to military 
-    time = time.format("HH");
+    var time = moment(taskTime,"hA").format("H");
 
-    //var now = moment().format("HH");
-    var now = "13";
+    var now = moment().format("H");
+    //var now = "13";
 
     //remove any existing colors
     $(taskEl).removeClass("past present future");
@@ -86,21 +83,15 @@ var loadTasks = function() {
         tasksToday = [];
         var taskToday = {};
         for (i=startTime;i<(endTime+1);i++) {
-            if (i < 12) {
-                taskToday = {
-                    time: (i + "AM"),
-                    task: "" };
-            } else if (i == 12) {
-                taskToday = {
-                    time: (i + "PM"),
-                    task: "" };
-            } else {
-                taskToday = {
-                    time: ((i-12) + "PM"),
-                    task: "" };
-            }
+            //convert military to 12h
+            var taskTime = moment(i,"H").format("hA");
+            taskToday = {
+                time: taskTime,
+                task: "" 
+            };
             tasksToday[i] = taskToday;
         }
+        console.log(tasksToday);
     } else {
         // assign each task from local storage to the appropriate time
         for (i in tasksToday) {
