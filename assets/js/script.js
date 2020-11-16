@@ -16,20 +16,21 @@ var auditTask = function(taskEl) {
     //convert to military 
     time = time.format("HH");
 
-    var now = moment().format("HH");
+    //var now = moment().format("HH");
+    var now = "13";
 
     //remove any existing colors
-    $(taskEl).removeClass("bg-secondary bg-success bg-danger");
+    $(taskEl).removeClass("past present future");
 
     // get difference in hours
     var diff = (time - now);
 
     if (diff > 0) {
-        $(taskEl).addClass("bg-success text-dark");
+        $(taskEl).addClass("future");
     } else if (diff == 0) {
-        $(taskEl).addClass("bg-danger text-dark");
+        $(taskEl).addClass("present");
     } else if (diff < 0 ) {
-        $(taskEl).addClass("bg-secondary text-dark");
+        $(taskEl).addClass("past");
     };
 }
 
@@ -107,6 +108,7 @@ $(".saveBtn").on("click", function() {
     tasksToday[idx].time = taskTime;
     saveTasks();
 });
+
 
 // revert back to stored task if save button not clicked
 $(".row").on("blur", function() {
