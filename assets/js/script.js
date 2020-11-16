@@ -17,23 +17,19 @@ var auditTask = function(taskEl) {
     time = time.format("HH");
 
     var now = moment().format("HH");
-    //console.log(now);
-    //set now to 1PM for test purposes
-    //var now = "13";
 
     //remove any existing colors
     $(taskEl).removeClass("bg-secondary bg-success bg-danger");
 
     // get difference in hours
     var diff = (time - now);
-    
 
     if (diff > 0) {
-        $(taskEl).addClass("bg-success");
+        $(taskEl).addClass("bg-success text-dark");
     } else if (diff == 0) {
-        $(taskEl).addClass("bg-danger");
+        $(taskEl).addClass("bg-danger text-dark");
     } else if (diff < 0 ) {
-        $(taskEl).addClass("bg-secondary");
+        $(taskEl).addClass("bg-secondary text-dark");
     };
 }
 
