@@ -35,7 +35,10 @@ var auditTask = function(taskEl) {
     } else if (diff < 0 ) {
         $(taskEl).addClass("bg-secondary");
     };
+}
 
+// updates header to display the current day
+var getCurrentDay = function() {
     // set current day 
     $("#currentDay").text(moment().format("dddd, MMMM Do"));
 }
@@ -47,6 +50,7 @@ var saveTasks = function() {
 
 // loads tasks from local storage and updates schedule
 var loadTasks = function() {
+    getCurrentDay();
     tasksToday = JSON.parse(localStorage.getItem("tasksToday"));
 
     // if nothing in localStorage, create a new object
@@ -123,4 +127,5 @@ setInterval(function() {
     $(".form-control").each(function(index, el) {
         auditTask(el);
     });
+    getCurrentDay();
 }, (1000 * 60) * 30);
