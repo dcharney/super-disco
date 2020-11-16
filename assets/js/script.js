@@ -11,9 +11,12 @@ const endTime = 18;
 // green for future
 var auditTask = function(taskEl) {
     var taskTime = $(taskEl).attr("id");
+    console.log(taskEl);
     var time = moment(taskTime,"hh a/A");
+    
     //convert to military 
     time = time.format("HH");
+
     var now = moment().format("HH");
     //console.log(now);
     //set now to 1PM for test purposes
@@ -24,6 +27,7 @@ var auditTask = function(taskEl) {
 
     // get difference in hours
     var diff = (time - now);
+    
 
     if (diff > 0) {
         $(taskEl).addClass("bg-success");
@@ -72,7 +76,10 @@ var loadTasks = function() {
         }
     }
 
-    
+    // check time relative to now and color code accordingly
+    $(".form-control").each(function(index, el) {
+        auditTask(el);
+    });
 }
 
 // given the time and the text, update the textare of the appropriate line 
@@ -111,13 +118,7 @@ loadTasks();
 
 // update row colors every 30 mins
 setInterval(function() {
-    $(".row").each(function(index, el) {
-        console.log(index);
-        console.log(el);
-        //auditTask(el);
+    $(".form-control").each(function(index, el) {
+        auditTask(el);
     });
 }, (1000 * 60) * 30);
-
-$(".form-control").each(function(index, el) {
-    auditTask(el);
-});
